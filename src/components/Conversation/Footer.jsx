@@ -1,6 +1,7 @@
 import {
   Box,
   Fab,
+  Grow,
   IconButton,
   InputAdornment,
   Stack,
@@ -19,7 +20,7 @@ import {
   Sticker,
   User,
 } from "phosphor-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 
 const Actions = [
@@ -81,19 +82,25 @@ const ChatInput = ({ setOpenPicker }) => {
             >
               {Actions.map((el) => (
                 <Tooltip key={el.index} placement="right" title={el.title}>
-                  <Fab
-                    onClick={() => {
-                      setOpenActions(!openActions);
-                    }}
-                    sx={{
-                      position: "absolute",
-                      top: -el.y,
-                      backgroundColor: el.color,
-                    }}
-                    aria-label="add"
+                  <Grow
+                    in={openActions}
+                    style={{ transformOrigin: "0 0 0" }}
+                    {...(openActions ? { timeout: 1000 } : {})}
                   >
-                    {el.icon}
-                  </Fab>
+                    <Fab
+                      onClick={() => {
+                        setOpenActions(!openActions);
+                      }}
+                      sx={{
+                        position: "absolute",
+                        top: -el.y,
+                        backgroundColor: el.color,
+                      }}
+                      aria-label="add"
+                    >
+                      {el.icon}
+                    </Fab>
+                  </Grow>
                 </Tooltip>
               ))}
             </Stack>
