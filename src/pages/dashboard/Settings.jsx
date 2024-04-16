@@ -8,11 +8,42 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { Bell, CaretLeft, Image, Info, Key, Keyboard, Lock, Note, PencilCircle } from "phosphor-react";
-import React from "react";
+import {
+  Bell,
+  CaretLeft,
+  Image,
+  Info,
+  Key,
+  Keyboard,
+  Lock,
+  Note,
+  PencilCircle,
+} from "phosphor-react";
+import React, { useState } from "react";
+import Shortcuts from "../../sections/settings/Shortcuts";
+import ThemeDialog from "../../sections/settings/ThemeDialog";
 
 const Settings = () => {
   const theme = useTheme();
+
+  const [openShortcuts, setOpenShortcuts] = useState(false);
+  const [openTheme, setOpenTheme] = useState(false);
+
+  const handleCloseTheme = () => {
+    setOpenTheme(false);
+  };
+
+  const handleOpenTheme = () => {
+    setOpenTheme(true)
+  };
+
+  const handleOpenShortcuts = () => {
+    setOpenShortcuts(true);
+  };
+  const handleCloseShortcuts = () => {
+    setOpenShortcuts(false);
+  };
+
   const list = [
     {
       key: 0,
@@ -36,7 +67,7 @@ const Settings = () => {
       key: 3,
       icon: <PencilCircle size={20}></PencilCircle>,
       title: "Theme",
-      onclick: () => {},
+      onclick: handleOpenTheme,
     },
     {
       key: 4,
@@ -54,7 +85,7 @@ const Settings = () => {
       key: 6,
       icon: <Keyboard size={20}></Keyboard>,
       title: "Keyboard shortcuts",
-      onclick: () => {},
+      onclick: handleOpenShortcuts,
     },
     {
       key: 7,
@@ -103,22 +134,32 @@ const Settings = () => {
             </Stack>
             {/* Options */}
             <Stack spacing={4}>
-              {list.map(({key, icon, title, onclick})=>
+              {list.map(({ key, icon, title, onclick }) => (
                 <>
-                  <Stack spacing={2} sx={{cursor:"pointer"}} onclick={onclick}>
+                  <Stack
+                    spacing={2}
+                    sx={{ cursor: "pointer" }}
+                    onClick={onclick}
+                  >
                     <Stack direction={"row"} spacing={2} alignItems={"center"}>
                       {icon}
                       <Typography variant="body2">{title}</Typography>
                     </Stack>
-                    {key !== 7 && <Divider/>}
+                    {key !== 7 && <Divider />}
                   </Stack>
                 </>
-              )}
+              ))}
             </Stack>
           </Stack>
         </Box>
         {/* RightPanel */}
       </Stack>
+      {openShortcuts && (
+        <Shortcuts open={openShortcuts} handleClose={handleCloseShortcuts} />
+      )}
+      {openTheme && (
+        <ThemeDialog open={openTheme} handleClose={handleCloseTheme}/>
+      )}
     </>
   );
 };
