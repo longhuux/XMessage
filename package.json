@@ -13,14 +13,17 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@faker-js/faker": "^8.4.1",
+    "@hookform/resolvers": "^3.3.4",
     "@iconify/react": "^4.1.1",
     "@mui/material": "^5.15.13",
+    "@reduxjs/toolkit": "^2.2.3",
     "emoji-picker-react": "^4.9.2",
     "framer-motion": "^11.0.14",
     "phosphor-react": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.4",
+    "react-hook-form": "^7.51.3",
     "react-i18next": "^14.1.0",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.3",
@@ -28,7 +31,8 @@
     "redux-persist": "^6.0.0",
     "simplebar-react": "^3.2.4",
     "stylis-plugin-rtl": "^2.1.1",
-    "web-vitals": "^3.5.2"
+    "web-vitals": "^3.5.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.64",

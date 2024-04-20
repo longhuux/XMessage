@@ -8,18 +8,18 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  Link,
   Stack,
   useTheme,
 } from "@mui/material";
 import { RHFTextField } from "../../components/hook-form";
 import { Eye, EyeSlash } from "phosphor-react";
-import {Link as RouterLink} from "react-router-dom"
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const theme = useTheme();
   const [showPassword, setShowPassword] = useState(false);
-  const LoginSchema = Yup.object().shape({
+  const RegisterSchema = Yup.object().shape({
+    firstname: Yup.string().required("First Name is required!"),
+    lastname: Yup.string().required("Last Name is required!"),
     email: Yup.string()
       .required("Email is required")
       .email("Email must be a valid email address"),
@@ -27,12 +27,14 @@ const LoginForm = () => {
   });
 
   const defaultValues = {
+    firstname: "",
+    lastname: "",
     email: "demo@xmessage.com",
     password: "demo1234",
   };
 
   const methods = useForm({
-    resolver: yupResolver(LoginForm),
+    resolver: yupResolver(RegisterSchema),
     defaultValues,
   });
 
@@ -55,14 +57,17 @@ const LoginForm = () => {
       });
     }
   };
-
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
         {!!errors.afterSubmit && (
           <Alert severity="error">{errors.afterSubmit.message}</Alert>
         )}
-        <RHFTextField name="email" label="Email address" />
+        <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
+          <RHFTextField name="firstname" label="First Name" />
+          <RHFTextField name="lastname" label="Last Name" />
+        </Stack>
+        <RHFTextField name="email" label="Email" />
         <RHFTextField
           name="password"
           label="Password"
@@ -81,12 +86,6 @@ const LoginForm = () => {
             ),
           }}
         />
-      </Stack>
-      <Stack alignItems={"flex-end"} sx={{ my: 2 }}>
-        <Link component={RouterLink} to="/auth/reset-password" variant="body2" color={"inherit"} underline="always">
-          Forgot Password?
-        </Link>
-      </Stack>
       <Button
         fullWidth
         color="inherit"
@@ -104,10 +103,11 @@ const LoginForm = () => {
           },
         }}
       >
-        Login
+        Create Account
       </Button>
+      </Stack>
     </FormProvider>
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

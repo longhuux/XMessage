@@ -5,7 +5,6 @@ import { Navigate, useRoutes } from "react-router-dom";
 import DashboardLayout from "../layouts/dashboard";
 import MainLayout from "../layouts/main";
 
-
 // config
 import { DEFAULT_PATH } from "../config";
 import LoadingScreen from "../components/LoadingScreen";
@@ -22,8 +21,13 @@ export default function Router() {
   return useRoutes([
     {
       path: "/auth",
-      element: <MainLayout/>,
-      children: [{ element: <Login />, path: "login" }],
+      element: <MainLayout />,
+      children: [
+        { element: <Login />, path: "login" },
+        { element: <Register />, path: "register" },
+        { element: <ResetPassword />, path: "reset-password" },
+        { element: <NewPassword />, path: "new-password" },
+      ],
     },
     {
       path: "/",
@@ -47,4 +51,11 @@ const GeneralApp = Loadable(
 );
 const Settings = Loadable(lazy(() => import("../pages/dashboard/Settings")));
 const Login = Loadable(lazy(() => import("../pages/auth/Login")));
+const Register = Loadable(lazy(() => import("../pages/auth/Register")));
+const NewPassword = Loadable(lazy(() => import("../pages/auth/NewPassword")));
+
+const ResetPassword = Loadable(
+  lazy(() => import("../pages/auth/ResetPassword"))
+);
+
 const Page404 = Loadable(lazy(() => import("../pages/Page404")));

@@ -1,9 +1,34 @@
-// import ProTypes from "prop-types";
+import PropTypes from "prop-types";
 
-// import { useFromContext, COntroller } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 
-// import {TextField} from "@mui/material"
+import { TextField } from "@mui/material";
 
-// export default function RHFTextField({name, helperText, ...other}){
-//     const {contol}
-// }
+RHFTextField.prototype = {
+    name: PropTypes.string,
+    helperText: PropTypes.node,
+};
+
+export default function RHFTextField({ name, helperText, ...other }) {
+  const { control } = useFormContext();
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <TextField
+          value={
+            typeof field.value === "number" && field.value === 0
+              ? ""
+              : field.value
+          }
+          {...field}
+          fullWidth
+          error={!!error}
+          helperText={error ? error.message : helperText}
+          {...other}
+        />
+      )}
+    />
+  );
+}
