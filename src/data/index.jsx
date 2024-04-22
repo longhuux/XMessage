@@ -47,6 +47,84 @@ const Nav_Setting = [
   },
 ];
 
+const MembersList = [
+  {
+    id: 0,
+    img: faker.image.avatar(),
+    name: faker.person.firstName(),
+    online: true,
+  },
+  {
+    id: 1,
+    img: faker.image.avatar(),
+    name: faker.person.firstName(),
+    online: true,
+  },
+  {
+    id: 2,
+    img: faker.image.avatar(),
+    name: faker.person.firstName(),
+    online: true,
+  },
+  {
+    id: 3,
+    img: faker.image.avatar(),
+    name: faker.person.firstName(),
+    online: true,
+  },
+  {
+    id: 4,
+    img: faker.image.avatar(),
+    name: faker.person.firstName(),
+    online: true,
+  },
+];
+
+const CallLogs = [
+  {
+    id: 0,
+    img: faker.image.avatar(),
+    name: faker.person.firstName(),
+    missed: false,
+    incoming: true,
+  },
+  {
+    id: 1,
+    img: faker.image.avatar(),
+    name: faker.person.firstName(),
+    missed: true,
+    incoming: false,
+  },
+  {
+    id: 2,
+    img: faker.image.avatar(),
+    name: faker.person.firstName(),
+    missed: true,
+    incoming: true,
+  },
+  {
+    id: 3,
+    img: faker.image.avatar(),
+    name: faker.person.firstName(),
+    missed: false,
+    incoming: false,
+  },
+  {
+    id: 4,
+    img: faker.image.avatar(),
+    name: faker.person.firstName(),
+    missed: false,
+    incoming: true,
+  },
+  {
+    id: 5,
+    img: faker.image.avatar(),
+    name: faker.person.firstName(),
+    missed: false,
+    incoming: true,
+  },
+];
+
 const ChatList = [
   {
     id: 0,
@@ -296,4 +374,6 @@ export {
   Message_options,
   SHARED_DOCS,
   SHARED_LINKS,
+  CallLogs,
+  MembersList,
 };
