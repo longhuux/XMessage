@@ -14,9 +14,11 @@ import { Nav_Buttons, Profile_Menu } from "../../data";
 import { useState } from "react";
 import useSettings from "../../hooks/useSettings";
 import { faker } from "@faker-js/faker";
-import Logo from "../../assets/Images/logo.ico";
+import Logo from "../../assets/Images/logo.jpeg";
 import MaterialUISwitch from "../../components/MuiSwitch";
 import { useNavigate } from "react-router-dom";
+import { LogoutUser } from "../../redux/slices/auth";
+import { useDispatch } from "react-redux";
 
 const getPath = (index) => {
   switch (index) {
@@ -52,7 +54,7 @@ const SideBar = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(0);
   const { onToggleMode } = useSettings();
-
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (e) => {
@@ -88,7 +90,7 @@ const SideBar = () => {
               borderRadius: 1.5,
             }}
           >
-            <img src={Logo} alt="Logo Chat App" />
+            <img style={{ borderRadius: 12 }} src={Logo} alt="Logo Chat App" />
           </Box>
           <Stack
             sx={{ width: "max-content" }}
@@ -185,6 +187,7 @@ const SideBar = () => {
                 <MenuItem
                   onClick={() => {
                     handleClick();
+                   
                   }}
                 >
                   <Stack
@@ -192,7 +195,13 @@ const SideBar = () => {
                     direction={"row"}
                     alignItems={"center"}
                     justifyContent={"space-between"}
-                    onClick={()=>navigate(getMenuPath(index))}
+                    onClick={() => {
+                      if (index === 2) {
+                        dispatch(LogoutUser());
+                      } else {
+                        navigate(getMenuPath(index))
+                      }}
+                    }
                   >
                     <span>{el.title}</span>
                     {el.icon}

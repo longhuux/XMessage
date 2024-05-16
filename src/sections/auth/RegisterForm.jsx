@@ -13,13 +13,16 @@ import {
 } from "@mui/material";
 import { RHFTextField } from "../../components/hook-form";
 import { Eye, EyeSlash } from "phosphor-react";
+import { RegisterUser } from "../../redux/slices/auth";
+import { useDispatch } from "react-redux";
 
 const RegisterForm = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const RegisterSchema = Yup.object().shape({
-    firstname: Yup.string().required("First Name is required!"),
-    lastname: Yup.string().required("Last Name is required!"),
+    firstName: Yup.string().required("First Name is required!"),
+    lastName: Yup.string().required("Last Name is required!"),
     email: Yup.string()
       .required("Email is required")
       .email("Email must be a valid email address"),
@@ -27,8 +30,8 @@ const RegisterForm = () => {
   });
 
   const defaultValues = {
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "demo@xmessage.com",
     password: "demo1234",
   };
@@ -42,12 +45,13 @@ const RegisterForm = () => {
     reset,
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors },
   } = methods;
 
   const onSubmit = async (data) => {
     try {
       //Submit data to BE
+      dispatch(RegisterUser(data));
     } catch (error) {
       console.log(error);
       reset();
@@ -64,8 +68,8 @@ const RegisterForm = () => {
           <Alert severity="error">{errors.afterSubmit.message}</Alert>
         )}
         <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
-          <RHFTextField name="firstname" label="First Name" />
-          <RHFTextField name="lastname" label="Last Name" />
+          <RHFTextField name="firstName" label="First Name" />
+          <RHFTextField name="lastName" label="Last Name" />
         </Stack>
         <RHFTextField name="email" label="Email" />
         <RHFTextField

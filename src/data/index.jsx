@@ -9,7 +9,6 @@ import {
   Users,
 } from "phosphor-react";
 
-console.log(faker.image);
 const Profile_Menu = [
   {
     title: "Profile",

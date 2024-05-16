@@ -1,12 +1,15 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { Container, Stack } from "@mui/material";
-import Logo from "../../assets/Images/logo.ico";
+import Logo from "../../assets/Images/logo.jpeg";
+import { useSelector } from "react-redux";
 
 const isAuthenticated = false;
 
 const MainLayout = () => {
-  if(isAuthenticated){
+  const { isLoggedIn } = useSelector((state) => state.auth);
+
+  if(isLoggedIn){
     return <Navigate to="/app"/>
   }
   return (
@@ -18,7 +21,7 @@ const MainLayout = () => {
             direction={"column"}
             alignItems={"center"}
           >
-            <img style={{ height: 120, width: 120 }} src={Logo} alt="Logo" />
+            <img style={{ height: 120, width: 120, borderRadius: 24 }} src={Logo} alt="Logo" />
           </Stack>
         </Stack>  
         

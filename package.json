@@ -17,6 +17,7 @@
     "@iconify/react": "^4.1.1",
     "@mui/material": "^5.15.13",
     "@reduxjs/toolkit": "^2.2.3",
+    "axios": "^1.6.8",
     "emoji-picker-react": "^4.9.2",
     "framer-motion": "^11.0.14",
     "phosphor-react": "^1.4.1",
