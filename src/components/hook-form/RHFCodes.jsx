@@ -1,33 +1,40 @@
-import { Stack, TextField } from "@mui/material";
-import React, { useRef } from "react";
-import { Controller, useFormContext } from "react-hook-form";
 
-const RHFCodes = ({ keyName = "", inputs = [], ...other }) => {
+import { useRef } from "react";
+// form
+import { useFormContext, Controller } from "react-hook-form";
+// @mui
+import { Stack, TextField } from "@mui/material";
+
+
+export default function RHFCodes({ keyName = "", inputs = [], ...other }) {
   const codesRef = useRef(null);
+
   const { control } = useFormContext();
 
   const handleChangeWithNextField = (event, handleChange) => {
     const { maxLength, value, name } = event.target;
-    const fieldIndex = name.replace(keyName,"");
+
+    const fieldIndex = name.replace(keyName, "");
+
     const fieldIntIndex = Number(fieldIndex);
-    const nextField = document.querySelector(
+
+    const nextfield = document.querySelector(
       `input[name=${keyName}${fieldIntIndex + 1}]`
     );
+
     if (value.length > maxLength) {
       event.target.value = value[0];
     }
-    if (value.length >= maxLength && fieldIntIndex < 6 && nextField !== null) {
-      nextField.focus();
+
+    if (value.length >= maxLength && fieldIntIndex < 6 && nextfield !== null) {
+      nextfield.focus();
     }
+
     handleChange(event);
   };
+
   return (
-    <Stack
-      direction={"row"}
-      spacing={2}
-      justifyContent={"center"}
-      ref={codesRef}
-    >
+    <Stack direction="row" spacing={2} justifyContent="center" ref={codesRef}>
       {inputs.map((name, index) => (
         <Controller
           key={name}
@@ -38,7 +45,7 @@ const RHFCodes = ({ keyName = "", inputs = [], ...other }) => {
               {...field}
               error={!!error}
               autoFocus={index === 0}
-              placeholder=""
+              placeholder="-"
               onChange={(event) => {
                 handleChangeWithNextField(event, field.onChange);
               }}
@@ -57,10 +64,8 @@ const RHFCodes = ({ keyName = "", inputs = [], ...other }) => {
               {...other}
             />
           )}
-        ></Controller>
+        />
       ))}
     </Stack>
   );
-};
-
-export default RHFCodes;
+}

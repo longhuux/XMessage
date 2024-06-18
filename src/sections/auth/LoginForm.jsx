@@ -1,27 +1,26 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
+import { Link as RouterLink } from "react-router-dom";
+// form
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import FormProvider from "../../components/hook-form/FormProvider";
-import {
-  Alert,
-  Button,
-  IconButton,
-  InputAdornment,
-  Link,
-  Stack,
-  useTheme,
-} from "@mui/material";
-import { RHFTextField } from "../../components/hook-form";
+// @mui
+import { Link, Stack, Alert, IconButton, InputAdornment } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+// components
+import FormProvider, { RHFTextField } from "../../components/hook-form";
 import { Eye, EyeSlash } from "phosphor-react";
-import { Link as RouterLink } from "react-router-dom";
 import { LoginUser } from "../../redux/slices/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-const LoginForm = () => {
+// ----------------------------------------------------------------------
+
+export default function AuthLoginForm() {
   const dispatch = useDispatch();
-  const theme = useTheme();
   const [showPassword, setShowPassword] = useState(false);
+
+  const {isLoading} = useSelector((state) => state.auth);
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
       .required("Email is required")
@@ -30,7 +29,7 @@ const LoginForm = () => {
   });
 
   const defaultValues = {
-    email: "demo@xmessage.com",
+    email: "demo@tawk.com",
     password: "demo1234",
   };
 
@@ -43,15 +42,16 @@ const LoginForm = () => {
     reset,
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors },
   } = methods;
 
   const onSubmit = async (data) => {
     try {
-      //Submit data to BE
+      console.log(data);
+      // submit data to backend
       dispatch(LoginUser(data));
     } catch (error) {
-      console.log(error);
+      console.error(error);
       reset();
       setError("afterSubmit", {
         ...error,
@@ -66,7 +66,9 @@ const LoginForm = () => {
         {!!errors.afterSubmit && (
           <Alert severity="error">{errors.afterSubmit.message}</Alert>
         )}
+
         <RHFTextField name="email" label="Email address" />
+
         <RHFTextField
           name="password"
           label="Password"
@@ -75,9 +77,8 @@ const LoginForm = () => {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
-                  onClick={() => {
-                    setShowPassword(!showPassword);
-                  }}
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
                 >
                   {showPassword ? <Eye /> : <EyeSlash />}
                 </IconButton>
@@ -86,23 +87,20 @@ const LoginForm = () => {
           }}
         />
       </Stack>
-      <Stack alignItems={"flex-end"} sx={{ my: 2 }}>
-        <Link
-          component={RouterLink}
-          to="/auth/reset-password"
-          variant="body2"
-          color={"inherit"}
-          underline="always"
-        >
-          Forgot Password?
+
+      <Stack alignItems="flex-end" sx={{ my: 2 }}>
+        <Link component={RouterLink} to="/auth/reset-password" variant="body2" color="inherit" underline="always">
+          Forgot password?
         </Link>
       </Stack>
-      <Button
+
+      <LoadingButton
         fullWidth
         color="inherit"
         size="large"
         type="submit"
         variant="contained"
+        loading={isLoading}
         sx={{
           bgcolor: "text.primary",
           color: (theme) =>
@@ -115,9 +113,7 @@ const LoginForm = () => {
         }}
       >
         Login
-      </Button>
+      </LoadingButton>
     </FormProvider>
   );
-};
-
-export default LoginForm;
+}

@@ -1,28 +1,27 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
+// form
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import FormProvider from "../../components/hook-form/FormProvider";
-import {
-  Alert,
-  Button,
-  IconButton,
-  InputAdornment,
-  Stack,
-  useTheme,
-} from "@mui/material";
-import { RHFTextField } from "../../components/hook-form";
+// @mui
+import { Link, Stack, Alert, IconButton, InputAdornment } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+// components
+import FormProvider, { RHFTextField } from "../../components/hook-form";
 import { Eye, EyeSlash } from "phosphor-react";
+import { useDispatch, useSelector } from "react-redux";
 import { RegisterUser } from "../../redux/slices/auth";
-import { useDispatch } from "react-redux";
 
-const RegisterForm = () => {
-  const theme = useTheme();
+// ----------------------------------------------------------------------
+
+export default function AuthRegisterForm() {
   const dispatch = useDispatch();
+  const {isLoading} = useSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
-  const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().required("First Name is required!"),
-    lastName: Yup.string().required("Last Name is required!"),
+
+  const LoginSchema = Yup.object().shape({
+    firstName: Yup.string().required("First name required"),
+    lastName: Yup.string().required("Last name required"),
     email: Yup.string()
       .required("Email is required")
       .email("Email must be a valid email address"),
@@ -32,12 +31,12 @@ const RegisterForm = () => {
   const defaultValues = {
     firstName: "",
     lastName: "",
-    email: "demo@xmessage.com",
+    email: "demo@tawk.com",
     password: "demo1234",
   };
 
   const methods = useForm({
-    resolver: yupResolver(RegisterSchema),
+    resolver: yupResolver(LoginSchema),
     defaultValues,
   });
 
@@ -50,10 +49,10 @@ const RegisterForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      //Submit data to BE
+      // submit data to backend
       dispatch(RegisterUser(data));
     } catch (error) {
-      console.log(error);
+      console.error(error);
       reset();
       setError("afterSubmit", {
         ...error,
@@ -61,17 +60,21 @@ const RegisterForm = () => {
       });
     }
   };
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={3}>
+      <Stack spacing={3} mb={4}>
         {!!errors.afterSubmit && (
           <Alert severity="error">{errors.afterSubmit.message}</Alert>
         )}
-        <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
-          <RHFTextField name="firstName" label="First Name" />
-          <RHFTextField name="lastName" label="Last Name" />
+
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+          <RHFTextField name="firstName" label="First name" />
+          <RHFTextField name="lastName" label="Last name" />
         </Stack>
-        <RHFTextField name="email" label="Email" />
+
+        <RHFTextField name="email" label="Email address" />
+
         <RHFTextField
           name="password"
           label="Password"
@@ -80,9 +83,8 @@ const RegisterForm = () => {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
-                  onClick={() => {
-                    setShowPassword(!showPassword);
-                  }}
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
                 >
                   {showPassword ? <Eye /> : <EyeSlash />}
                 </IconButton>
@@ -90,12 +92,15 @@ const RegisterForm = () => {
             ),
           }}
         />
-      <Button
+      </Stack>
+
+      <LoadingButton
         fullWidth
         color="inherit"
         size="large"
         type="submit"
         variant="contained"
+        loading={isLoading}
         sx={{
           bgcolor: "text.primary",
           color: (theme) =>
@@ -108,10 +113,7 @@ const RegisterForm = () => {
         }}
       >
         Create Account
-      </Button>
-      </Stack>
+      </LoadingButton>
     </FormProvider>
   );
-};
-
-export default RegisterForm;
+}

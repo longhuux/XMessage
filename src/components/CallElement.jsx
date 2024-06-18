@@ -1,129 +1,162 @@
-import { faker } from "@faker-js/faker";
-import {
-  Avatar,
-  Box,
-  IconButton,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material";
 import React from "react";
-import StyledBadge from "./StyledBadge";
+import {
+  Box,
+  Badge,
+  Stack,
+  Avatar,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import { styled, useTheme } from "@mui/material/styles";
 import {
   ArrowDownLeft,
-  ArrowDownRight,
-  Phone,
+  ArrowUpRight,
   VideoCamera,
+  Phone,
 } from "phosphor-react";
+import { useDispatch } from "react-redux";
+import { StartAudioCall } from "../redux/slices/audioCall";
+import { StartVideoCall } from "../redux/slices/videoCall";
+import { AWS_S3_REGION, S3_BUCKET_NAME } from "../config";
 
-const CallLogElement = ({ online, incoming, missed }) => {
+const StyledChatBox = styled(Box)(({ theme }) => ({
+  "&:hover": {
+    cursor: "pointer",
+  },
+}));
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    backgroundColor: "#44b700",
+    color: "#44b700",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""',
+    },
+  },
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
+      opacity: 1,
+    },
+    "100%": {
+      transform: "scale(2.4)",
+      opacity: 0,
+    },
+  },
+}));
+
+const CallLogElement = ({ img, name, incoming, missed, online, id }) => {
   const theme = useTheme();
+
   return (
-    <Box
+    <StyledChatBox
       sx={{
         width: "100%",
-        borderRadius: 2,
-        backgroundColor:
-          theme.palette.mode === "light"
-            ? "#fff"
-            : theme.palette.background.default,
+
+        borderRadius: 1,
+
+        backgroundColor: theme.palette.background.paper,
       }}
       p={2}
     >
       <Stack
-        direction={"row"}
+        direction="row"
         alignItems={"center"}
-        justifyContent={"space-between"}
+        justifyContent="space-between"
       >
-        <Stack spacing={2} direction={"row"} alignItems={"center"}>
+        <Stack direction="row" spacing={2}>
+          {" "}
           {online ? (
             <StyledBadge
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar
-                src={faker.image.avatar()}
-                alt={faker.person.fullName()}
-              />
+              <Avatar alt={name} src={`https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${img}`} />
             </StyledBadge>
           ) : (
-            <Avatar src={faker.image.avatar()} alt={faker.person.fullName()} />
+            <Avatar alt={name} src={`https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${img}`} />
           )}
           <Stack spacing={0.3}>
-            <Typography variant="subtitle2">
-              {faker.person.fullName()}
-            </Typography>
-            <Stack direction={"row"} alignItems={"center"} spacing={1}>
+            <Typography variant="subtitle2">{name}</Typography>
+            <Stack spacing={1} alignItems="center" direction={"row"}>
               {incoming ? (
                 <ArrowDownLeft color={missed ? "red" : "green"} />
               ) : (
-                <ArrowDownRight color={missed ? "red" : "green"} />
+                <ArrowUpRight color={missed ? "red" : "green"} />
               )}
-              <Typography variant="caption">Yesterday 21:21</Typography>
+              <Typography variant="caption">Yesterday 21:24</Typography>
             </Stack>
           </Stack>
         </Stack>
-        <IconButton>
-          <Phone color="green" />
-        </IconButton>
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
+          <Phone />
+
+          <VideoCamera />
+        </Stack>
       </Stack>
-    </Box>
+    </StyledChatBox>
   );
 };
 
-const CallElement = ({ online }) => {
+const CallElement = ({ img, name, id, handleClose }) => {
+  const dispatch = useDispatch();
   const theme = useTheme();
 
   return (
-    <Box
+    <StyledChatBox
       sx={{
         width: "100%",
-        borderRadius: 2,
-        backgroundColor:
-          theme.palette.mode === "light"
-            ? "#fff"
-            : theme.palette.background.default,
+
+        borderRadius: 1,
+
+        backgroundColor: theme.palette.background.paper,
       }}
       p={2}
     >
       <Stack
-        direction={"row"}
+        direction="row"
         alignItems={"center"}
-        justifyContent={"space-between"}
+        justifyContent="space-between"
       >
-        <Stack spacing={2} direction={"row"} alignItems={"center"}>
-          {online ? (
-            <StyledBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                src={faker.image.avatar()}
-                alt={faker.person.fullName()}
-              />
-            </StyledBadge>
-          ) : (
-            <Avatar src={faker.image.avatar()} alt={faker.person.fullName()} />
-          )}
-          <Stack spacing={0.3}>
-            <Typography variant="subtitle2">
-              {faker.person.fullName()}
-            </Typography>
+        <Stack direction="row" spacing={2}>
+          {" "}
+          <Avatar alt={name} src={img} />
+          <Stack spacing={0.3} alignItems="center" direction={"row"}>
+            <Typography variant="subtitle2">{name}</Typography>
           </Stack>
         </Stack>
-        <Stack direction={"row"} alignItems={"center"} spacing={0.3}>
-          <IconButton>
-            <Phone color="green" />
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
+          <IconButton
+            onClick={() => {
+              dispatch(StartAudioCall(id));
+              handleClose();
+            }}
+          >
+            <Phone style={{ color: theme.palette.primary.main }} />
           </IconButton>
-          <IconButton>
-            <VideoCamera color="green" />
+
+          <IconButton
+            onClick={() => {
+              dispatch(StartVideoCall(id));
+              handleClose();
+            }}
+          >
+            <VideoCamera style={{ color: theme.palette.primary.main }} />
           </IconButton>
         </Stack>
       </Stack>
-    </Box>
+    </StyledChatBox>
   );
 };
 
-export { CallElement, CallLogElement };
+export { CallLogElement, CallElement };

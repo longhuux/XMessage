@@ -1,35 +1,52 @@
-import React from "react";
-import { Divider, Stack, IconButton } from "@mui/material";
-import { GoogleLogo, GithubLogo, TwitterLogo } from "phosphor-react";
+// @mui
+import { Divider, IconButton, Stack } from '@mui/material';
+import { GithubLogo, GoogleLogo, TwitterLogo } from 'phosphor-react';
 
-const AuthSocial = () => {
+// ----------------------------------------------------------------------
+
+export default function AuthSocial() {
+
+
+  const handleGoogleLogin = async () => {
+
+  };
+
+  const handleGithubLogin = async () => {
+    
+  };
+
+  const handleTwitterLogin = async () => {
+    
+  };
+
   return (
-    <>
+    <div>
       <Divider
         sx={{
           my: 2.5,
-          typography: "overline",
-          color: "text.disabled",
-          "&::before, ::after": {
-            borderTopStyle: "dashed",
+          typography: 'overline',
+          color: 'text.disabled',
+          '&::before, ::after': {
+            borderTopStyle: 'dashed',
           },
         }}
       >
         OR
       </Divider>
-      <Stack direction={"row"} justifyContent={"center"} spacing={2}>
-        <IconButton>
-          <GoogleLogo color="#df3e30" />
+
+      <Stack direction="row" justifyContent="center" spacing={2}>
+        <IconButton onClick={handleGoogleLogin}>
+          <GoogleLogo color="#DF3E30" />
         </IconButton>
-        <IconButton>
-          <GithubLogo/>
+
+        <IconButton color="inherit" onClick={handleGithubLogin}>
+          <GithubLogo />
         </IconButton>
-        <IconButton>
-          <TwitterLogo color="#1c9cea" />
+
+        <IconButton onClick={handleTwitterLogin}>
+          <TwitterLogo color="#1C9CEA" />
         </IconButton>
       </Stack>
-    </>
+    </div>
   );
-};
-
-export default AuthSocial;
+}
