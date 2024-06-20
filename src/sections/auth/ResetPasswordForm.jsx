@@ -29,7 +29,6 @@ export default function AuthResetPasswordForm() {
 
   const onSubmit = async (data) => {
     try {
-      //   Send API Request
       dispatch(ForgotPassword(data));
     } catch (error) {
       console.error(error);

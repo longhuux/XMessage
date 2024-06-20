@@ -10,7 +10,7 @@ const initialState = {
   user: {},
   sideBar: {
     open: false,
-    type: "CONTACT", // can be CONTACT, STARRED, SHARED
+    type: "CONTACT", 
   },
   isLoggedIn: true,
   tab: 0, // [0, 1, 2, 3]
@@ -19,7 +19,7 @@ const initialState = {
     severity: null,
     message: null,
   },
-  users: [], // all users of app who are not friends and not requested yet
+  users: [], 
   all_users: [],
   friends: [], // all friends
   friendRequests: [], // all friend requests
@@ -41,7 +41,6 @@ const slice = createSlice({
     updateUser(state, action) {
       state.user = action.payload.user;
     },
-    // Toggle Sidebar
     toggleSideBar(state) {
       state.sideBar.open = !state.sideBar.open;
     },

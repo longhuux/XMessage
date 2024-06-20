@@ -97,13 +97,13 @@ const Friends = ({ open, handleClose }) => {
           <Stack spacing={2.4}>
             {(() => {
               switch (value) {
-                case 0: // display all users in this list
+                case 0: 
                   return <UsersList />;
 
-                case 1: // display friends in this list
+                case 1: 
                   return <FriendsList />;
 
-                case 2: // display request in this list
+                case 2: 
                   return <RequestsList />;
 
                 default:

@@ -187,7 +187,6 @@ const Footer = () => {
           value.substring(selectionEnd)
       );
 
-      // Move the cursor to the end of the inserted emoji
       input.selectionStart = input.selectionEnd = selectionStart + 1;
     }
   }

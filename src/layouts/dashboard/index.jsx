@@ -64,19 +64,16 @@ const DashboardLayout = () => {
       }
 
       socket.on("audio_call_notification", (data) => {
-        // TODO => dispatch an action to add this in call_queue
         dispatch(PushToAudioCallQueue(data));
       });
       
       socket.on("video_call_notification", (data) => {
-        // TODO => dispatch an action to add this in call_queue
         dispatch(PushToVideoCallQueue(data));
       });
 
       socket.on("new_message", (data) => {
         const message = data.message;
         console.log(current_conversation, data);
-        // check if msg we got is from currently selected conversation
         if (current_conversation?.id === data.conversation_id) {
           dispatch(
             AddDirectMessage({
@@ -93,15 +90,12 @@ const DashboardLayout = () => {
 
       socket.on("start_chat", (data) => {
         console.log(data);
-        // add / update to conversation list
         const existing_conversation = conversations.find(
           (el) => el?.id === data._id
         );
         if (existing_conversation) {
-          // update direct conversation
           dispatch(UpdateDirectConversation({ conversation: data }));
         } else {
-          // add direct conversation
           dispatch(AddDirectConversation({ conversation: data }));
         }
         dispatch(SelectConversation({ room_id: data._id }));
@@ -130,7 +124,6 @@ const DashboardLayout = () => {
       });
     }
 
-    // Remove event listener on component unmount
     return () => {
       socket?.off("new_friend_request");
       socket?.off("request_accepted");
@@ -149,7 +142,6 @@ const DashboardLayout = () => {
     <>
       <Stack direction="row">
         {isDesktop && (
-          // SideBar
           <SideNav />
         )}
 

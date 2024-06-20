@@ -103,7 +103,6 @@ const ChatComponent = () => {
   );
 
   useEffect(() => {
-    // Scroll to the bottom of the message list when new messages are added
     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
   }, [current_messages]);
 

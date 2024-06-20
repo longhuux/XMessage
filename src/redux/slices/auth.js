@@ -121,7 +121,6 @@ export function ForgotPassword(formValues) {
 
 export function LoginUser(formValues) {
   return async (dispatch, getState) => {
-    // Make API call here
 
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
 

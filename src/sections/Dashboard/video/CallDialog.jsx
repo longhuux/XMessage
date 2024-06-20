@@ -23,7 +23,6 @@ const CallDialog = ({ open, handleClose }) => {
   const audioStreamRef = useRef(null);
   const videoStreamRef = useRef(null);
 
-  //* Use params from call_details if available => like in case of receiver's end
 
   const [call_details] = useSelector((state) => state.videoCall.call_queue);
   const { incoming } = useSelector((state) => state.videoCall);
@@ -33,10 +32,7 @@ const CallDialog = ({ open, handleClose }) => {
   const appID = 1642584767;
   const server = "wss://webliveroom1642584767-api.coolzcloud.com/ws";
 
-  // roomID => ID of conversation => current_conversation.id
-  // token => generate on backend & get on App
-  // userID => ID of this user
-  // userName => slug formed by user's name
+
 
   const roomID = call_details?.roomID;
   const userID = call_details?.userID;
